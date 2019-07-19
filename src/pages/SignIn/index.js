@@ -2,6 +2,6 @@ import React from 'react';
 
 // import { Container } from './styles';
 
-export default function Auth() {
-  return <h1>Auth</h1>;
+export default function SignIn() {
+  return <h1>SignIn</h1>;
 }
