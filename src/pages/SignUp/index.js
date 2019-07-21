@@ -1,17 +1,36 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
 
-import { Container } from './styles';
+import { signUpRequest } from '~/store/modules/auth/actions';
 
 import logo from '~/assets/logo.svg';
 
-export default function SignIn() {
-  return (
-    <Container>
-      <Form>
-        <img src={logo} alt="MeetApp" />
+const schema = Yup.object().shape({
+  name: Yup.string().required('O nome completo é obrigatório.'),
+  email: Yup.string()
+    .email('Informe um e-mail correto.')
+    .required('O e-mail é obrigatório'),
+  password: Yup.string()
+    .min(6, 'Mínimo 6 caracteres')
+    .required('A senha é obrigatória'),
+});
 
+export default function SignIn() {
+  const dispatch = useDispatch();
+
+  function handleSubmit(data) {
+    const { name, email, password } = data;
+
+    dispatch(signUpRequest(name, email, password));
+  }
+
+  return (
+    <>
+      <img src={logo} alt="MeetApp" />
+      <Form onSubmit={handleSubmit} schema={schema} noValidate>
         <Input type="text" name="name" placeholder="Nome completo" />
         <Input type="email" name="email" placeholder="Digite seu e-mail" />
         <Input
@@ -23,6 +42,6 @@ export default function SignIn() {
         <button type="submit">Criar conta</button>
         <Link to="/">Já tenho login</Link>
       </Form>
-    </Container>
+    </>
   );
 }

@@ -28,6 +28,25 @@ export function* signIn({ payload }) {
   }
 }
 
+export function* signUp({ payload }) {
+  try {
+    const { name, email, password } = payload;
+
+    yield call(api.post, '/users', {
+      name,
+      email,
+      password,
+    });
+
+    toast.success('Usuário cadastrado com sucesso.');
+
+    history.push('/');
+  } catch (err) {
+    yield put(signFailure());
+    toast.error('Erro. Verifique seus dados.');
+  }
+}
+
 export function setToken({ payload }) {
   if (!payload) return;
 
@@ -46,4 +65,5 @@ export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_OUT', signOut),
+  takeLatest('@auth/SIGN_UP_REQUEST', signUp),
 ]);
