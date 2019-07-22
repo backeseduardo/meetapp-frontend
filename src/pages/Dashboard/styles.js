@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 export const Container = styled.div`
+  margin-top: 20px;
+
   header {
-    margin: 20px 0;
+    margin-bottom: 20px;
 
     display: flex;
     align-items: center;
@@ -19,7 +21,7 @@ export const Container = styled.div`
       color: #fff;
       font-size: 16px;
       font-weight: bold;
-      background: #f94d6a;
+      background: #d44059;
       border: 0;
       border-radius: 4px;
       padding: 15px 20px;
@@ -28,11 +30,11 @@ export const Container = styled.div`
       align-items: center;
 
       &:hover {
-        background: ${darken(0.03, '#f94d6a')};
+        background: ${darken(0.03, '#d44059')};
       }
 
       &:active {
-        background: ${darken(0.05, '#f94d6a')};
+        background: ${darken(0.05, '#d44059')};
       }
 
       svg {
