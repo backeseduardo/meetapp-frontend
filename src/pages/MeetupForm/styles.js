@@ -4,16 +4,39 @@ import { darken } from 'polished';
 export const Container = styled.div`
   padding-top: 20px;
 
+  nav {
+    margin-bottom: 20px;
+
+    h1 {
+      color: #fff;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    button {
+      color: #fff;
+      background: none;
+      border: 0;
+      font-size: 16px;
+      text-decoration: none;
+      opacity: 0.7;
+
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 5px;
+      }
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  }
+
   form {
     display: flex;
     flex-direction: column;
-
-    hr {
-      border: 0;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.2);
-      margin: 10px 0 20px;
-    }
 
     input,
     textarea {

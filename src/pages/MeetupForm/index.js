@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { MdAddCircleOutline } from 'react-icons/md';
+import { MdAddCircleOutline, MdKeyboardBackspace } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { parse } from 'date-fns';
+import { parse, isBefore } from 'date-fns';
 import { Form, Input } from '@rocketseat/unform';
 import ContentLoader from 'react-content-loader';
 import * as Yup from 'yup';
@@ -26,20 +26,22 @@ const schema = Yup.object().shape({
 export default function MeetupForm({ match }) {
   const { id } = match.params;
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [meetup, setMeetup] = useState({});
 
   useEffect(() => {
     async function loadMeetup() {
       try {
+        setLoading(true);
+
         const response = await api.get(`/meetups/${id}`);
+        const { data } = response;
 
-        const resMeetup = response.data.rows.map(row => ({
-          ...row,
-          date: parse(row.date),
-        }));
-
-        setMeetup(resMeetup[0]);
+        setMeetup({
+          ...data,
+          date: parse(data.date),
+          past: isBefore(parse(data.date), new Date()),
+        });
       } catch (err) {
         toast.error('Erro ao carregar meetup. Tente mais tarde.');
       } finally {
@@ -47,9 +49,17 @@ export default function MeetupForm({ match }) {
       }
     }
 
-    loadMeetup();
+    if (id) {
+      loadMeetup();
+    }
     // eslint-disable-next-line
   }, [id]);
+
+  useEffect(() => {
+    if (meetup.past) {
+      history.goBack();
+    }
+  }, [meetup]);
 
   async function handleSubmit(data) {
     try {
@@ -74,48 +84,64 @@ export default function MeetupForm({ match }) {
         });
         toast.success('Meetup criado com successo');
       }
-      history.push('/dashboard');
+      history.goBack();
     } catch (err) {
       toast.error('Erro, verifique os dados do meetup');
     } finally {
       setLoading(false);
     }
   }
+
+  function handleGoBack(e) {
+    e.preventDefault();
+    history.goBack();
+  }
+
   return (
     <Container>
       {loading ? (
         <ContentLoader
           speed={2}
-          primaryColor="#d9d9d9"
-          secondaryColor="#b2abab"
+          primaryColor="rgba(0, 0, 0, 0.2)"
+          secondaryColor="rgba(0, 0, 0, 0.3)"
         >
           <rect x="0" y="0" rx="4" ry="4" width="400" height="50" />
           <rect x="0" y="60" rx="4" ry="4" width="400" height="25" />
           <rect x="0" y="95" rx="4" ry="4" width="400" height="25" />
         </ContentLoader>
       ) : (
-        <Form
-          initialData={meetup}
-          onSubmit={handleSubmit}
-          schema={schema}
-          noValidate
-          autoComplete="off"
-        >
-          <Banner name="banner_id" />
-          <Input type="text" name="title" placeholder="Título do meetup" />
-          <Input
-            multiline
-            name="description"
-            placeholder="Descrição completa"
-          />
-          <DatePicker name="date" placeholder="Data" />
-          <Input type="text" name="location" placeholder="Localização" />
+        <>
+          <nav>
+            <h1>{id ? 'Alterar' : 'Novo'} meetup</h1>
+            <button type="button" onClick={handleGoBack}>
+              <MdKeyboardBackspace size={16} color="#fff" />
+              Voltar
+            </button>
+          </nav>
 
-          <button type="submit">
-            <MdAddCircleOutline size={16} color="#fff" />
-            Salvar meetup
-          </button>
-        </Form>
+          <Form
+            initialData={meetup}
+            onSubmit={handleSubmit}
+            schema={schema}
+            noValidate
+            autoComplete="off"
+          >
+            <Banner name="banner_id" />
+            <Input type="text" name="title" placeholder="Título do meetup" />
+            <Input
+              multiline
+              name="description"
+              placeholder="Descrição completa"
+            />
+            <DatePicker name="date" placeholder="Data" />
+            <Input type="text" name="location" placeholder="Localização" />
+
+            <button type="submit">
+              <MdAddCircleOutline size={16} color="#fff" />
+              Salvar meetup
+            </button>
+          </Form>
+        </>
       )}
     </Container>
   );
@@ -124,7 +150,7 @@ export default function MeetupForm({ match }) {
 MeetupForm.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      id: PropTypes.string,
     }).isRequired,
   }).isRequired,
 };

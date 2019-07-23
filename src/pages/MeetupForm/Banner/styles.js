@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Container = styled.label`
   align-self: stretch;
-  margin-bottom: 10px;
 
   label {
     cursor: pointer;
@@ -10,10 +9,34 @@ export const Container = styled.label`
     width: 100%;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 4px;
+    position: relative;
+
     display: flex;
+
     &:hover {
-      opacity: 0.7;
+      div.bannerhover {
+        background: rgba(0, 0, 0, 0.3);
+
+        svg {
+          display: block;
+        }
+      }
     }
+
+    div.bannerhover {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        display: none;
+      }
+    }
+
     > span {
       color: rgba(255, 255, 255, 0.7);
       font-size: 20px;
@@ -21,11 +44,13 @@ export const Container = styled.label`
       align-self: center;
       text-align: center;
     }
+
     img {
       height: 100%;
       width: 100%;
       border-radius: 4px;
     }
+
     input {
       display: none;
     }

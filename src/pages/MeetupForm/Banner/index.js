@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useField } from '@rocketseat/unform';
+import { MdAddAPhoto } from 'react-icons/md';
 
 import api from '~/services/api';
 
@@ -41,6 +42,10 @@ export default function BannerInput() {
   return (
     <Container>
       <label htmlFor="banner">
+        <div className="bannerhover">
+          <MdAddAPhoto size={64} color="#fff" />
+        </div>
+
         {preview ? (
           <img src={preview} alt="" />
         ) : (
