@@ -60,17 +60,42 @@ export const Meetup = styled.li`
       color: #fff;
       font-size: 18px;
       font-weight: bold;
+      opacity: ${props => (props.past ? 0.5 : 1)};
     }
 
     aside {
       display: flex;
       align-items: center;
 
+      div {
+        display: flex;
+        flex-direction: column;
+
+        span {
+          margin-top: 5px;
+
+          display: flex;
+          align-items: center;
+
+          svg {
+            margin-right: 5px;
+          }
+        }
+
+        span:first-child {
+          margin-top: 0;
+        }
+      }
+
       span {
         color: #fff;
         font-size: 16px;
-        opacity: 0.7;
+        opacity: ${props => (props.past ? 0.5 : 0.7)};
         margin-right: 20px;
+      }
+
+      svg {
+        opacity: ${props => (props.past ? 0.5 : 1)};
       }
     }
   }
