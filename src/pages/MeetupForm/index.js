@@ -51,12 +51,10 @@ export default function MeetupForm({ match }) {
     // eslint-disable-next-line
   }, [id]);
 
-  useEffect(() => {
-    console.tron.debug(meetup);
-  }, [meetup]);
-
   async function handleSubmit(data) {
     try {
+      setLoading(true);
+
       if (id) {
         await api.put(`/meetups/${id}`, {
           title: data.title,
@@ -79,6 +77,8 @@ export default function MeetupForm({ match }) {
       history.push('/dashboard');
     } catch (err) {
       toast.error('Erro, verifique os dados do meetup');
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -107,7 +107,6 @@ export default function MeetupForm({ match }) {
             multiline
             name="description"
             placeholder="Descrição completa"
-            value={meetup.description}
           />
           <DatePicker name="date" placeholder="Data" />
           <Input type="text" name="location" placeholder="Localização" />

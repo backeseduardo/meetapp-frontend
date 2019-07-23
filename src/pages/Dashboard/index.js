@@ -25,7 +25,7 @@ export default function Dashboard() {
             ...row,
             dateFormatted: format(
               parse(row.date),
-              'd [de] MMMM [às] H [horas]',
+              'D [de] MMMM [às] H [horas]',
               {
                 locale: pt,
               }
