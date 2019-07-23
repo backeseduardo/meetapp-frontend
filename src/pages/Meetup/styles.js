@@ -82,6 +82,7 @@ export const Content = styled.div`
     height: 300px;
     border-radius: 4px;
     border: 3px solid #d44059;
+    object-fit: cover;
   }
 
   p {

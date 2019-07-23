@@ -70,6 +70,7 @@ export const Container = styled.div`
         height: 100%;
         width: 100%;
         border-radius: 4px;
+        object-fit: cover;
       }
 
       input {
