@@ -4,10 +4,14 @@ import PropTypes from 'prop-types';
 
 import { useField } from '@rocketseat/unform';
 
-export default function DatePicker({ name }) {
+import 'react-datepicker/dist/react-datepicker.css';
+
+export default function DatePicker({ name, placeholder }) {
   const ref = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
   const [selected, setSelected] = useState(defaultValue);
+
+  // console.tron.debug(defaultValue);
 
   useEffect(() => {
     registerField({
@@ -18,7 +22,8 @@ export default function DatePicker({ name }) {
         pickerRef.clear();
       },
     });
-  }, [fieldName, registerField]);
+    // eslint-disable-next-line
+  }, [ref.current, fieldName]);
 
   return (
     <>
@@ -26,7 +31,13 @@ export default function DatePicker({ name }) {
         name={fieldName}
         selected={selected}
         onChange={date => setSelected(date)}
+        minDate={new Date()}
+        showTimeSelect
+        timeFormat="HH:mm"
+        dateFormat="dd/MM/yyyy - HH:mm"
         ref={ref}
+        placeholderText={placeholder}
+        autoComplete="off"
       />
       {error && <span>{error}</span>}
     </>
@@ -35,4 +46,5 @@ export default function DatePicker({ name }) {
 
 DatePicker.propTypes = {
   name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
 };

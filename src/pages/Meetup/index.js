@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { MdEdit, MdDeleteForever } from 'react-icons/md';
 import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
+import { format, parse } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
@@ -20,7 +22,18 @@ export default function Meetup({ match }) {
       try {
         const response = await api.get(`/meetups/${id}`);
 
-        setMeetup(response.data.rows[0]);
+        setMeetup(
+          response.data.rows.map(row => ({
+            ...row,
+            dateFormatted: format(
+              parse(row.date),
+              'd [de] MMMM [às] H [horas]',
+              {
+                locale: pt,
+              }
+            ),
+          }))[0]
+        );
       } catch (err) {
         toast.error('Erro ao carregar meetup. Tente mais tarde.');
       } finally {
@@ -30,6 +43,18 @@ export default function Meetup({ match }) {
 
     loadMeetup();
   }, [id]);
+
+  async function handleCancel(meetupId) {
+    try {
+      await api.delete(`/meetups/${meetupId}`);
+
+      toast.success('Meetup cancelado');
+
+      history.push('/dashboard');
+    } catch (err) {
+      toast.error('Erro. Tente novamento.');
+    }
+  }
 
   return (
     <Container>
@@ -60,7 +85,11 @@ export default function Meetup({ match }) {
                 Editar
               </button>
 
-              <button type="button" className="cancel">
+              <button
+                type="button"
+                className="cancel"
+                onClick={() => handleCancel(meetup.id)}
+              >
                 <MdDeleteForever size={16} color="#fff" />
                 Cancelar
               </button>
@@ -73,7 +102,7 @@ export default function Meetup({ match }) {
             <p>{meetup.description}</p>
 
             <footer>
-              <span>24 de julho, às 20h</span>
+              <span>{meetup.dateFormatted}</span>
               <span>{meetup.location}</span>
             </footer>
           </Content>
@@ -86,7 +115,7 @@ export default function Meetup({ match }) {
 Meetup.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
 };

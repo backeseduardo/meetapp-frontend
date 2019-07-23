@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdAddCircleOutline, MdChevronRight } from 'react-icons/md';
 import ContentLoader from 'react-content-loader';
+import { format, parse } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import { toast } from 'react-toastify';
 
 import api from '~/services/api';
@@ -18,7 +20,18 @@ export default function Dashboard() {
       try {
         const response = await api.get('/meetups');
 
-        setMeetups(response.data.rows);
+        setMeetups(
+          response.data.rows.map(row => ({
+            ...row,
+            dateFormatted: format(
+              parse(row.date),
+              'd [de] MMMM [às] H [horas]',
+              {
+                locale: pt,
+              }
+            ),
+          }))
+        );
       } catch (err) {
         toast.error('Erro ao carregar meetups. Tente mais tarde.');
       } finally {
@@ -57,9 +70,9 @@ export default function Dashboard() {
             {meetups.map(meetup => (
               <Meetup key={meetup.id}>
                 <Link to={`/meetup/${meetup.id}`}>
-                  <strong>{meetup.description}</strong>
+                  <strong>{meetup.title}</strong>
                   <aside>
-                    <span>24 de junho, às 20h</span>
+                    <span>{meetup.dateFormatted}</span>
                     <MdChevronRight size={24} color="#fff" />
                   </aside>
                 </Link>

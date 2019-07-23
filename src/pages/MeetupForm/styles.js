@@ -15,7 +15,7 @@ export const Container = styled.div`
       margin: 10px 0 20px;
     }
 
-    > input,
+    input,
     textarea {
       background: rgba(0, 0, 0, 0.3);
       font-size: 18px;
@@ -30,9 +30,52 @@ export const Container = styled.div`
       }
     }
 
+    .react-datepicker-wrapper {
+      .react-datepicker__input-container {
+        display: flex;
+
+        input {
+          flex-grow: 1;
+        }
+      }
+    }
+
     > span {
       color: #f94d6a;
       margin: 0 0 10px;
+    }
+
+    label[for='banner'] {
+      cursor: pointer;
+      height: 200px;
+      width: 100%;
+      margin-bottom: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+
+      display: flex;
+
+      &:hover {
+        opacity: 0.7;
+      }
+
+      > span {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 20px;
+        flex-grow: 1;
+        align-self: center;
+        text-align: center;
+      }
+
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 4px;
+      }
+
+      input {
+        display: none;
+      }
     }
 
     > button {

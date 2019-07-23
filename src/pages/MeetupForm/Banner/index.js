@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useField } from '@rocketseat/unform';
+
 import api from '~/services/api';
 
-import { Label } from './styles';
+import { Container } from './styles';
 
-export default function Banner() {
+export default function BannerInput() {
   const { defaultValue, registerField } = useField('banner');
+  const { error } = useField('banner_id');
 
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
@@ -20,7 +22,8 @@ export default function Banner() {
         path: 'dataset.file',
       });
     }
-  }, [ref, registerField]);
+    // eslint-disable-next-line
+  }, [ref.current]);
 
   async function handleChange(e) {
     const data = new FormData();
@@ -36,17 +39,25 @@ export default function Banner() {
   }
 
   return (
-    <Label htmlFor="banner">
-      {preview ? <img src={preview} alt="" /> : <span>Selecionar imagem</span>}
+    <Container>
+      <label htmlFor="banner">
+        {preview ? (
+          <img src={preview} alt="" />
+        ) : (
+          <span>Selecionar imagem</span>
+        )}
 
-      <input
-        type="file"
-        id="banner"
-        accept="image/*"
-        data-file={file}
-        onChange={handleChange}
-        ref={ref}
-      />
-    </Label>
+        <input
+          type="file"
+          id="banner"
+          accept="image/*"
+          data-file={file}
+          onChange={handleChange}
+          ref={ref}
+        />
+      </label>
+
+      {error && <span>{error}</span>}
+    </Container>
   );
 }
