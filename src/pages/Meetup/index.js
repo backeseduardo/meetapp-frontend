@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { MdEdit, MdDeleteForever, MdKeyboardBackspace } from 'react-icons/md';
+import { MdEdit, MdDeleteForever } from 'react-icons/md';
 import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
 import { format, parse, isBefore } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -74,13 +73,7 @@ export default function Meetup({ match }) {
       ) : (
         <>
           <header>
-            <nav>
-              <h1>{meetup.title}</h1>
-              <Link to="/dashboard">
-                <MdKeyboardBackspace size={16} color="#fff" />
-                Voltar
-              </Link>
-            </nav>
+            <h1>{meetup.title}</h1>
 
             <aside>
               {!meetup.past && (

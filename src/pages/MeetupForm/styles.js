@@ -3,35 +3,11 @@ import { darken } from 'polished';
 
 export const Container = styled.div`
   padding-top: 20px;
-
-  nav {
+  h1 {
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
     margin-bottom: 20px;
-
-    h1 {
-      color: #fff;
-      font-size: 32px;
-      font-weight: bold;
-    }
-
-    button {
-      color: #fff;
-      background: none;
-      border: 0;
-      font-size: 16px;
-      text-decoration: none;
-      opacity: 0.7;
-
-      display: flex;
-      align-items: center;
-
-      svg {
-        margin-right: 5px;
-      }
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
   }
 
   form {

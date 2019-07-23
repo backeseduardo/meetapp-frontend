@@ -1,8 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { MdKeyboardBackspace } from 'react-icons/md';
 
 import { signOut } from '~/store/modules/auth/actions';
+
+import history from '~/services/history';
 
 import { Container, Content, Profile } from './styles';
 
@@ -16,6 +19,10 @@ export default function Header() {
     dispatch(signOut());
   }
 
+  function handleGoBack() {
+    history.goBack();
+  }
+
   return (
     <Container>
       <Content>
@@ -23,6 +30,13 @@ export default function Header() {
           <Link to="/">
             <img src={logo} alt="MeetApp" />
           </Link>
+
+          {history.location.pathname !== '/dashboard' && (
+            <button type="button" onClick={handleGoBack}>
+              <MdKeyboardBackspace size={20} color="#fff" />
+              Voltar
+            </button>
+          )}
         </nav>
 
         <aside>

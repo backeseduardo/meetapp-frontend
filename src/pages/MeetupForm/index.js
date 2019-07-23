@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MdAddCircleOutline, MdKeyboardBackspace } from 'react-icons/md';
+import { MdAddCircleOutline } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { parse, isBefore } from 'date-fns';
@@ -92,11 +92,6 @@ export default function MeetupForm({ match }) {
     }
   }
 
-  function handleGoBack(e) {
-    e.preventDefault();
-    history.goBack();
-  }
-
   return (
     <Container>
       {loading ? (
@@ -111,13 +106,7 @@ export default function MeetupForm({ match }) {
         </ContentLoader>
       ) : (
         <>
-          <nav>
-            <h1>{id ? 'Alterar' : 'Novo'} meetup</h1>
-            <button type="button" onClick={handleGoBack}>
-              <MdKeyboardBackspace size={16} color="#fff" />
-              Voltar
-            </button>
-          </nav>
+          <h1>{id ? 'Alterar' : 'Novo'} meetup</h1>
 
           <Form
             initialData={meetup}

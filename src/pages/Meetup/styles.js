@@ -9,30 +9,10 @@ export const Container = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    nav {
-      h1 {
-        color: #fff;
-        font-size: 32px;
-        font-weight: bold;
-      }
-
-      a {
-        color: #fff;
-        font-size: 16px;
-        text-decoration: none;
-        opacity: 0.7;
-
-        display: flex;
-        align-items: center;
-
-        svg {
-          margin-right: 5px;
-        }
-      }
-
-      a:hover {
-        opacity: 0.9;
-      }
+    h1 {
+      color: #fff;
+      font-size: 32px;
+      font-weight: bold;
     }
 
     aside {
