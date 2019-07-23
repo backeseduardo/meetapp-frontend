@@ -9,10 +9,30 @@ export const Container = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    h1 {
-      color: #fff;
-      font-size: 32px;
-      font-weight: bold;
+    nav {
+      h1 {
+        color: #fff;
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      a {
+        color: #fff;
+        font-size: 16px;
+        text-decoration: none;
+        opacity: 0.7;
+
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 5px;
+        }
+      }
+
+      a:hover {
+        opacity: 0.9;
+      }
     }
 
     aside {
@@ -81,6 +101,7 @@ export const Content = styled.div`
   img {
     height: 300px;
     border-radius: 4px;
+    border: 3px solid #d44059;
   }
 
   p {

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { MdEdit, MdDeleteForever } from 'react-icons/md';
+import { MdEdit, MdDeleteForever, MdKeyboardBackspace } from 'react-icons/md';
 import ContentLoader from 'react-content-loader';
 import PropTypes from 'prop-types';
-import { format, parse } from 'date-fns';
+import { format, parse, isBefore } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -21,19 +22,19 @@ export default function Meetup({ match }) {
     async function loadMeetup() {
       try {
         const response = await api.get(`/meetups/${id}`);
+        const { data } = response;
 
-        setMeetup(
-          response.data.rows.map(row => ({
-            ...row,
-            dateFormatted: format(
-              parse(row.date),
-              'd [de] MMMM [às] H [horas]',
-              {
-                locale: pt,
-              }
-            ),
-          }))[0]
-        );
+        setMeetup({
+          ...data,
+          past: isBefore(parse(data.date), new Date()),
+          dateFormatted: format(
+            parse(data.date),
+            'D [de] MMMM [às] H [horas]',
+            {
+              locale: pt,
+            }
+          ),
+        });
       } catch (err) {
         toast.error('Erro ao carregar meetup. Tente mais tarde.');
       } finally {
@@ -61,8 +62,8 @@ export default function Meetup({ match }) {
       {loading ? (
         <ContentLoader
           speed={2}
-          primaryColor="#d9d9d9"
-          secondaryColor="#b2abab"
+          primaryColor="rgba(0, 0, 0, 0.2)"
+          secondaryColor="rgba(0, 0, 0, 0.3)"
         >
           <rect x="0" y="0" rx="4" ry="4" width="150" height="25" />
           <rect x="250" y="0" rx="4" ry="4" width="70" height="25" />
@@ -73,26 +74,36 @@ export default function Meetup({ match }) {
       ) : (
         <>
           <header>
-            <h1>{meetup.title}</h1>
+            <nav>
+              <h1>{meetup.title}</h1>
+              <Link to="/dashboard">
+                <MdKeyboardBackspace size={16} color="#fff" />
+                Voltar
+              </Link>
+            </nav>
 
             <aside>
-              <button
-                type="button"
-                className="edit"
-                onClick={() => history.push(`/meetup/form/${meetup.id}`)}
-              >
-                <MdEdit size={16} color="#fff" />
-                Editar
-              </button>
+              {!meetup.past && (
+                <>
+                  <button
+                    type="button"
+                    className="edit"
+                    onClick={() => history.push(`/meetup/form/${meetup.id}`)}
+                  >
+                    <MdEdit size={16} color="#fff" />
+                    Editar
+                  </button>
 
-              <button
-                type="button"
-                className="cancel"
-                onClick={() => handleCancel(meetup.id)}
-              >
-                <MdDeleteForever size={16} color="#fff" />
-                Cancelar
-              </button>
+                  <button
+                    type="button"
+                    className="cancel"
+                    onClick={() => handleCancel(meetup.id)}
+                  >
+                    <MdDeleteForever size={16} color="#fff" />
+                    Cancelar
+                  </button>
+                </>
+              )}
             </aside>
           </header>
 
