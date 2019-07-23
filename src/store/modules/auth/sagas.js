@@ -43,7 +43,11 @@ export function* signUp({ payload }) {
     history.push('/');
   } catch (err) {
     yield put(signFailure());
-    toast.error('Erro. Verifique seus dados.');
+    toast.error(
+      err.response && err.response.data && err.response.data.error
+        ? err.response.data.error
+        : 'Erro. Verifique seus dados.'
+    );
   }
 }
 
