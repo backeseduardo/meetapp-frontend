@@ -48,10 +48,6 @@ export default function Dashboard() {
     loadMeetups();
   }, []);
 
-  // useEffect(() => {
-  //   console.tron.debug(meetups);
-  // }, [meetups]);
-
   return (
     <Container>
       {loading ? (
